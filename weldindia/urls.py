@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from main.views import home,upload_file
+from main.views import home,upload_file,product_list
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('upload/', upload_file, name='upload'), 
+    path('products/',product_list,name='product_list'),
     
 ]
 
