@@ -2,18 +2,30 @@
 
 {% block content %}
 <div class="container mt-4">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Products</li>
+        </ol>
+    </nav>
+
     <h2 class="text-center">Our Products</h2>
     <div class="row">
         {% for product in products %}
         <div class="col-md-4">
             <div class="card mb-4">
                 {% if product.image %}
-                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                <a href="{% url 'product_detail' product.id %}">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                </a>
                 {% else %}
                 <img src="https://via.placeholder.com/300" class="card-img-top" alt="No image available">
                 {% endif %}
                 <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
+                    <a href="{% url 'product_detail' product.id %}">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                    </a>
                     <p class="card-text">{{ product.description }}</p>
                     {% if product.price %}
                     <p class="text-muted">Price: ₹{{ product.price }}</p>

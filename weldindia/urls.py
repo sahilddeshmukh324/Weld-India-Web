@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from main.views import home,upload_file,product_list
+from main.views import home,upload_file,product_list,ProductDetailView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -26,6 +26,8 @@ urlpatterns = [
     path('', home, name='home'),
     path('upload/', upload_file, name='upload'), 
     path('products/',product_list,name='product_list'),
+    path('products/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
+
     
 ]
 
