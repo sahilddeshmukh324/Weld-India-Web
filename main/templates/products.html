@@ -4,37 +4,45 @@
 <div class="container mt-4">
     <!-- Breadcrumb Navigation -->
     <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <ol class="breadcrumb bg-light p-3 rounded">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-orange">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page">Products</li>
         </ol>
     </nav>
 
-    <h2 class="text-center">Our Products</h2>
+    <!-- Page Heading -->
+    <h2 class="text-center display-5 fw-bold text-orange mb-5">Our Products</h2>
+
+    <!-- Product Grid -->
     <div class="row">
         {% for product in products %}
-        <div class="col-md-4">
-            <div class="card mb-4">
-                {% if product.image %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
                 <a href="{% url 'product_detail' product.id %}">
-                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                </a>
-                {% else %}
-                <img src="https://via.placeholder.com/300" class="card-img-top" alt="No image available">
-                {% endif %}
-                <div class="card-body">
-                    <a href="{% url 'product_detail' product.id %}">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                    </a>
-                    <p class="card-text">{{ product.description }}</p>
-                    {% if product.price %}
-                    <p class="text-muted">Price: ₹{{ product.price }}</p>
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top img-fluid rounded" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                        <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top img-fluid rounded" alt="No image available" style="height: 200px; object-fit: cover;">
                     {% endif %}
+                </a>
+                <div class="card-body">
+                    <a href="{% url 'product_detail' product.id %}" class="text-decoration-none text-dark">
+                        <h5 class="card-title fw-bold">{{ product.name }}</h5>
+                    </a>
+                    <p class="card-text text-muted">{{ product.description|truncatechars:100 }}</p>
+                    {% if product.price %}
+                    <p class="text-success fw-bold">Price: ₹{{ product.price }}</p>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="{% url 'product_detail' product.id %}" class="btn btn-primary w-100">View Details</a>
                 </div>
             </div>
         </div>
         {% empty %}
-        <p class="text-center">No products available.</p>
+        <div class="col-12 text-center">
+            <p class="lead text-muted">No products available.</p>
+        </div>
         {% endfor %}
     </div>
 </div>
