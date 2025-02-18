@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-light p-3 rounded">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-orange">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'product_list' %}" class="text-decoration-none text-orange">Products</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
+
+
+     <!-- Success Message -->
+     {% if messages %}
+     {% for message in messages %}
+         <div class="alert alert-success">{{ message }}</div>
+     {% endfor %}
+     {% endif %}
+
+
+
+
+
+    <!-- Product Details -->
+    <div class="row">
+        <div class="col-md-6">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ product.name }}">
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0">
+                <div class="card-body">
+                    <h1 class="card-title display-5 fw-bold text-orange">{{ product.name }}</h1>
+                    <p class="card-text lead text-muted">{{ product.description }}</p>
+                    {% if product.price %}
+                    <p class="text-success fs-4 fw-bold">Price: ₹{{ product.price }}</p>
+                    {% endif %}
+                    <div class="mt-4">
+                        <button class="btn btn-outline-dark btn-lg">Contact for Inquiry</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Product Information -->
+    <div class="mt-5">
+        <h3 class="text-orange mb-4">Product Specifications</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Material:</strong> {{ product.material|default:"Not specified" }}</li>
+                    <li class="list-group-item"><strong>Size:</strong> {{ product.size|default:"Not specified" }}</li>
+                    <li class="list-group-item"><strong>Weight:</strong> {{ product.weight|default:"Not specified" }}</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Brand:</strong> {{ product.brand|default:"Not specified" }}</li>
+                    <li class="list-group-item"><strong>Warranty:</strong> {{ product.warranty|default:"Not specified" }}</li>
+                    <li class="list-group-item"><strong>Availability:</strong> In Stock</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Inquiry Form -->
+<div class="mt-5 p-4 bg-light rounded shadow-sm">
+    <h3 class="text-orange">Send an Inquiry</h3>
+    <p class="text-muted">Have questions about this product? Send us a message.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_name" class="form-label">Your Name</label>
+            {{ form.name }}
+        </div>
+        <div class="mb-3">
+            <label for="id_email" class="form-label">Your Email</label>
+            {{ form.email }}
+        </div>
+        <div class="mb-3">
+            <label for="id_company_name" class="form-label">Company Name</label>
+            {{ form.company_name }}
+        </div>
+        <div class="mb-3">
+            <label for="id_phone" class="form-label">Phone Number</label>
+            {{ form.phone }}
+        </div>
+        <div class="mb-3">
+            <label for="id_message" class="form-label">Your Message</label>
+            {{ form.message }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Inquiry</button>
+    </form>
+</div>
+
+
+
+
+</div>
+{% endblock %}

@@ -1,8 +1,51 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="text-center">
-        <h1>Welcome to Weld India</h1>
-        <p>Your trusted supplier for welding rods and wires.</p>
+    <div class="text-center py-5 bg-light">
+        <h1 class="display-4 fw-bold text-orange">Welcome to Weld India</h1>
+        <p class="lead text-muted">Your trusted supplier for welding rods and wires.</p>
+        <div class="mt-4">
+            <a href="{% url 'product_list' %}" class="btn btn-primary btn-lg">Explore Products</a>
+            <a href="#" class="btn btn-outline-dark btn-lg ms-3">Contact Us</a>
+        </div>
+    </div>
+
+    <!-- Featured Section -->
+    <div class="container my-5">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title text-orange">High-Quality Products</h3>
+                        <p class="card-text text-muted">We provide premium welding rods and wires that meet industry standards.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title text-orange">Reliable Service</h3>
+                        <p class="card-text text-muted">Timely delivery and excellent customer support for all your needs.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title text-orange">Expert Guidance</h3>
+                        <p class="card-text text-muted">Our team of experts is here to help you choose the right products.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action Section -->
+    <div class="bg-orange text-white py-5">
+        <div class="container text-center">
+            <h2 class="fw-bold">Ready to Get Started?</h2>
+            <p class="lead">Join thousands of satisfied customers who trust Weld India for their welding needs.</p>
+            <a href="{% url 'product_list' %}" class="btn btn-light btn-lg">Shop Now</a>
+        </div>
     </div>
 {% endblock %}

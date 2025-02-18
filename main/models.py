@@ -51,3 +51,16 @@ class UploadedFile(models.Model):
     
     def __str__(self):
         return self.title
+
+
+class Inquiry(models.Model):
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='inquiries')
+    name = models.CharField(max_length=100)
+    company_name = models.CharField(max_length=255, blank=True, null=True)  # New Field
+    phone = models.CharField(max_length=15, blank=True, null=True)  # New Field
+    email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Inquiry from {self.name} for {self.product.name}"
