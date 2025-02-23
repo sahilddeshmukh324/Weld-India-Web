@@ -21,9 +21,17 @@ def upload_file(request):
     images = UploadedFile.objects.all()  # Fetch all uploaded files
     return render(request, 'upload.html', {'form': form, 'images': images})
 
+
 def product_list(request):
-    products = Product.objects.all()  # Fetch all products from the database
-    return render(request, 'products.html', {'products': products})  # Send products to template
+    search_query = request.GET.get('search', '')  # Get the search query from the request
+    if search_query:
+        # Filter products based on the search query in product name
+        products = Product.objects.filter(name__icontains=search_query)
+    else:
+        # If no search query, display all products
+        products = Product.objects.all()
+    
+    return render(request, 'products.html', {'products': products, 'search_query': search_query})
 
 
 class ProductDetailView(DetailView):
