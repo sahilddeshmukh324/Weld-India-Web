@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
 from .forms import UploadForm
-from .models import UploadedFile,Product,Inquiry
+from .models import UploadedFile,Product,Inquiry,Category
 from django.views.generic import DetailView
-from .forms import InquiryForm
+from .forms import InquiryForm,ProductFilterForm
 from django.core.mail import send_mail
 from django.contrib import messages
 # Create your views here.
@@ -22,16 +22,39 @@ def upload_file(request):
     return render(request, 'upload.html', {'form': form, 'images': images})
 
 
+
 def product_list(request):
-    search_query = request.GET.get('search', '')  # Get the search query from the request
+    search_query = request.GET.get('search', '')
+    category_id = request.GET.get('category', '')
+    price_range = request.GET.get('price_range', '')
+
+    # Fetch all categories dynamically
+    categories = Category.objects.all()
+
+    # Start filtering products based on search and filters
+    products = Product.objects.all()
+
     if search_query:
-        # Filter products based on the search query in product name
-        products = Product.objects.filter(name__icontains=search_query)
-    else:
-        # If no search query, display all products
-        products = Product.objects.all()
-    
-    return render(request, 'products.html', {'products': products, 'search_query': search_query})
+        products = products.filter(name__icontains=search_query)
+
+    if category_id:
+        products = products.filter(category_id=category_id)
+
+    if price_range == 'low':
+        products = products.filter(price__lt=500)
+    elif price_range == 'medium':
+        products = products.filter(price__gte=500, price__lte=2000)
+    elif price_range == 'high':
+        products = products.filter(price__gt=2000)
+
+    return render(request, 'products.html', {
+        'products': products,
+        'categories': categories,  # ✅ Send dynamic categories to the template
+        'search_query': search_query,
+        'selected_category': category_id,
+        'selected_price_range': price_range,
+    })
+
 
 
 class ProductDetailView(DetailView):

@@ -11,21 +11,56 @@
     </nav>
 
     <!-- Page Heading -->
-    <h2 class="text-center display-5 fw-bold text-orange mb-5">Our Products</h2>
+    <h2 class="text-center display-5 fw-bold text-orange mb-4">Our Products</h2>
 
-    <!-- Search Form -->
+    <!-- Search and Filter Form -->
     <form method="GET" action="{% url 'product_list' %}" class="mb-4">
-        <div class="input-group">
-            <input type="text" name="search" value="{{ search_query }}" class="form-control" placeholder="Search products">
-            <button class="btn btn-primary" type="submit">Search</button>
+        <div class="row">
+            <!-- Search Input -->
+            <div class="col-md-4 mb-2">
+                <input type="text" name="search" value="{{ search_query }}" class="form-control" placeholder="Search products">
+            </div>
+
+            <!-- Category Dropdown -->
+            <div class="col-md-3 mb-2">
+                <select name="category" class="form-select">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if category.id|stringformat:"s" == selected_category %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Price Range Filter -->
+            <div class="col-md-3 mb-2">
+                <select name="price_range" class="form-select">
+                    <option value="">All Prices</option>
+                    <option value="low" {% if price_range == "low" %}selected{% endif %}>Under ₹500</option>
+                    <option value="mid" {% if price_range == "mid" %}selected{% endif %}>₹500 - ₹2000</option>
+                    <option value="high" {% if price_range == "high" %}selected{% endif %}>Above ₹2000</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="col-md-2 mb-2">
+                <button class="btn btn-primary w-100" type="submit">Apply Filters</button>
+            </div>
         </div>
     </form>
 
     <!-- Show "Results for" message only if there are search results -->
-    {% if search_query and products %}
-        <p class="lead text-muted">Showing results for "{{ search_query }}".</p>
-    {% elif search_query and not products %}
-        <p class="lead text-muted">No search results found for "{{ search_query }}".</p>
+    {% if search_query or selected_category or price_range %}
+        {% if products %}
+            <p class="lead text-muted">Showing results for 
+                {% if search_query %}"{{ search_query }}"{% endif %}
+                {% if selected_category %} in category "{{ selected_category_name }}"{% endif %}
+                {% if price_range %} ({{ price_range_label }}){% endif %}
+            </p>
+        {% else %}
+            <p class="lead text-muted">No search results found.</p>
+        {% endif %}
     {% endif %}
 
     <!-- Product Grid -->
@@ -35,7 +70,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm product-card"> 
                     <a href="{% url 'product_detail' product.id %}">
-                        <div class="image-container">  <!-- ✅ Wrap image inside a div -->
+                        <div class="image-container">
                             {% if product.image %}
                                 <img src="{{ product.image.url }}" class="fixed-image" alt="{{ product.name }}">
                             {% else %}
@@ -60,16 +95,14 @@
             {% endfor %}
         </div>
     {% else %}
-        <!-- Display this message if no products are found -->
         <div class="col-12 text-center">
             <p class="lead text-muted">No products available.</p>
         </div>
     {% endif %}
 </div>
 
-<!-- ✅ Added CSS for hover effect and size fix -->
+<!-- Added CSS for hover effect and image styling -->
 <style>
-    /* Hover Effect */
     .product-card {
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
@@ -79,20 +112,19 @@
         box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
     }
 
-    /* Image Container to Keep Dimensions Fixed */
     .image-container {
         width: 100%;
-        height: 200px; /* Fixed height for all product images */
+        height: 200px;
         display: flex;
         justify-content: center;
         align-items: center;
-        overflow: hidden; /* Prevents image stretching */
+        overflow: hidden;
     }
 
     .fixed-image {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* Ensures uniform sizing */
+        object-fit: cover;
     }
 </style>
 

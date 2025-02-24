@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, BlogPost,Inquiry
+from .models import Product, BlogPost,Inquiry,Category
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -12,3 +12,5 @@ class BlogPostAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
 
 admin.site.register(Inquiry)  # ✅ Register Inquiry model
+
+admin.site.register(Category)  
